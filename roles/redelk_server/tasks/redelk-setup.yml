@@ -8,7 +8,6 @@
     repo: "https://github.com/{{ redelk_repo }}/RedELK.git"
     dest: "{{ redelk_repo_path }}"
     version: "{{ redelk_version }}"
-    refspec: "{{ redelk_version }}"
   failed_when: false
   delegate_to: localhost
 
