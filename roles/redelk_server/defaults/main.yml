@@ -17,6 +17,8 @@ es_redelk_ingest_password: redelk
 es_kibana_encryption_key: "sLOVUK5MLv0VDhKsMlQcjgAaSMLXLLVy"
 # -- Neo4J password (user: neo4j)
 neo4j_password: "BloodHound"
+# -- Postgres password
+pgsql_password: "Postgres"
 # -- Base directory for components install (where customer data will be stored) - allows to store on an encrypted partition/disk
 optsec_dir: "/opt"
 # -- Docker directory
