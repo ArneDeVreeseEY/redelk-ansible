@@ -113,7 +113,7 @@
     - cron
 
 # Bloodhound setup
-name: Copying bloodhound config file
+- name: Copying bloodhound config file
   become: true
   ansible.builtin.template:
     src: bloodhound/bloodhound.config.json.j2
