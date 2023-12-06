@@ -119,8 +119,6 @@
     src: bloodhound/bloodhound.config.json.j2
     dest: "{{ optsec_dir }}/{{ redelk_user }}/mounts/bloodhound-config/bloodhound.config.json"
     mode: 0644
-  tags:
-    - bloodhound
 
 # RedELK config files
 - name: Copying RedELK config files
