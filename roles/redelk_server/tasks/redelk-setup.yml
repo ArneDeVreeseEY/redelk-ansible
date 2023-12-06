@@ -27,6 +27,7 @@
     - redelk-logs
     - redelk-ssh
     - redelk-www
+    - bloodhound-config
 
 # jupyter
 - name: Copying Jupyter workbooks from RedELK repository
@@ -110,6 +111,16 @@
     mode: 0644
   tags:
     - cron
+
+# Bloodhound setup
+name: Copying bloodhound config file
+  become: true
+  ansible.builtin.template:
+    src: bloodhound/bloodhound.config.json.j2
+    dest: "{{ optsec_dir }}/{{ redelk_user }}/mounts/bloodhound-config/bloodhound.config.json"
+    mode: 0644
+  tags:
+    - bloodhound
 
 # RedELK config files
 - name: Copying RedELK config files
