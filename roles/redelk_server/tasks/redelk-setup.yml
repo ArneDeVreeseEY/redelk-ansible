@@ -143,12 +143,12 @@
 - name: Remove bloodhound dependency on nginx container (temp fix)
   become: true
   replace:
-        path: {{ redelk_repo_path }}/elkserver/redelk-{{ redelk_install_type }}.yml
-        regexp: '^\s+- bloodhound$'
-        replace: ''
+    path: "{{ redelk_repo_path }}/elkserver/redelk-{{ redelk_install_type }}.yml"
+    regexp: '^\s+- bloodhound$'
+    replace: ''
   tags:
     - docker 
-       
+
 - name: Generating docker-compose .env file
   become: true
   ansible.builtin.template:
