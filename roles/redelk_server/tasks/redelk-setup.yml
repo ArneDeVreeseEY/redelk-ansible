@@ -143,7 +143,7 @@
 - name: Remove bloodhound dependency on nginx container (temp fix)
   become: true
   replace:
-    path: "{{ redelk_repo_path }}/elkserver/redelk-{{ redelk_install_type }}.yml"
+    path: "{{ optsec_dir }}/{{ redelk_user }}/redelk-{{ redelk_install_type }}.yml"
     regexp: '^\s+- bloodhound$'
     replace: ''
   tags:
