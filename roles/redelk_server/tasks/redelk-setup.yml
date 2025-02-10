@@ -178,10 +178,10 @@
     - docker
 
 # init-letsencrypt.sh
-- name: Copying init-letsencrypt.sh from RedELK repository
+- name: Copying init-letsencrypt.sh 
   become: true
   ansible.builtin.copy:
-    src: "{{ redelk_repo_path }}/elkserver/init-letsencrypt.sh"
+    src: "files/init-letsencrypt.sh"
     dest: "{{ optsec_dir }}/{{ redelk_user }}/init-letsencrypt.sh"
     mode: 0755
     owner: "{{ redelk_user }}"

@@ -20,7 +20,7 @@
   enabled: true
   fields_under_root: true
   paths:
-    - {{ optsec_dir }}/cobaltstrike/logs/*/weblog.log
+    - {{ optsec_dir }}/cobaltstrike/logs/*/weblog*
   fields:
     infra:
       attack_scenario: {{ attack_scenario }}
@@ -62,21 +62,6 @@
       program: cobaltstrike
       log:
         type: credentials
-
-- type: log
-  scan_frequency: 5s
-  enabled: true
-  fields_under_root: true
-  paths:
-    - {{ optsec_dir }}/cobaltstrike/data/export_listeners.log
-  fields:
-    infra:
-      log:
-        type: rtops
-    c2:
-      program: cobaltstrike
-      log:
-        type: listeners
 
 - type: log
   scan_frequency: 5s
