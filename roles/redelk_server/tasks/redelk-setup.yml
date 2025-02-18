@@ -203,6 +203,8 @@
       ansible.builtin.wait_for:
         path: "{{ optsec_dir }}/{{ redelk_user }}/mounts/certs/redelk-logstash/redelk-logstash.pkcs8.key"
         state: present
+        timeout: 180  
+        sleep: 5  
       register: cert_check
       ignore_errors: true
       tags:
@@ -212,6 +214,7 @@
       become: true
       community.docker.docker_compose:
         project_src: "{{ optsec_dir }}/{{ redelk_user }}"
+        files: "redelk-{{ redelk_install_type }}.yml"
         state: absent
       when: cert_check.failed
       tags:
@@ -254,6 +257,7 @@
       when: cert_check_retry.failed | default(false)
       tags:
         - pki
+        - docker
 
 
 - name: Ensure local certificates directory exists
