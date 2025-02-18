@@ -197,24 +197,64 @@
     - pki
     - docker
 
-- name: Run `docker-compose up` again
-  become: true
-  community.docker.docker_compose:
-    project_src: "{{ optsec_dir }}/{{ redelk_user }}"
-    files: "redelk-{{ redelk_install_type }}.yml"
-    build: false
-  register: output
-  tags:
-    - pki
-    - docker
+- name: Ensure RedELK certificates are generated with retries
+  block:
+    - name: Wait until RedELK certificates are generated
+      ansible.builtin.wait_for:
+        path: "{{ optsec_dir }}/{{ redelk_user }}/mounts/certs/redelk-logstash/redelk-logstash.pkcs8.key"
+        state: present
+      register: cert_check
+      ignore_errors: true
+      tags:
+        - pki
 
-# redelk-logstash.pkcs8.key should be the latest cert to be generated from by the docker container
-- name: Wait until RedELK certificates are generated
-  ansible.builtin.wait_for:
-    path: "{{ optsec_dir }}/{{ redelk_user }}/mounts/certs/redelk-logstash/redelk-logstash.pkcs8.key"
-    state: present
-  tags:
-    - pki
+    - name: Stop Docker containers
+      become: true
+      community.docker.docker_compose:
+        project_src: "{{ optsec_dir }}/{{ redelk_user }}"
+        state: absent
+      when: cert_check.failed
+      tags:
+        - pki
+        - docker
+
+    - name: Delete existing certificates folder if check failed
+      ansible.builtin.file:
+        path: "{{ optsec_dir }}/{{ redelk_user }}/mounts/certs/"
+        state: absent
+      when: cert_check.failed
+      tags:
+        - pki
+
+    - name: Run `docker-compose up` again
+      become: true
+      community.docker.docker_compose:
+        project_src: "{{ optsec_dir }}/{{ redelk_user }}"
+        files: "redelk-{{ redelk_install_type }}.yml"
+        build: false
+      register: docker_restart
+      when: cert_check.failed
+      tags:
+        - pki
+        - docker
+
+    - name: Retry waiting for RedELK certificates
+      ansible.builtin.wait_for:
+        path: "{{ optsec_dir }}/{{ redelk_user }}/mounts/certs/redelk-logstash/redelk-logstash.pkcs8.key"
+        state: present
+      register: cert_check_retry
+      when: cert_check.failed
+      tags:
+        - pki
+
+  rescue:
+    - name: Fail the play if certificates are still missing after retries
+      ansible.builtin.fail:
+        msg: "RedELK certificates could not be generated after 2 attempts."
+      when: cert_check_retry.failed | default(false)
+      tags:
+        - pki
+
 
 - name: Ensure local certificates directory exists
   become: true
