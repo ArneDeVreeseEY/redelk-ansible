@@ -40,7 +40,7 @@
     name: "cron.d script for periodic actions related to RedELK"
     cron_file: redelk_logs
     job: >-
-      /usr/bin/rsync -ax --delete {{ optsec_dir }}/cobaltstrike/logs
+      /usr/bin/rsync -ax --delete {{ optsec_dir }}/cobaltstrike/server/logs
       {{ optsec_dir }}/{{ redelk_user }}/; /bin/chown -R {{ redelk_user }}:{{ redelk_user }}
       {{ optsec_dir }}/{{ redelk_user }}/*
     user: root

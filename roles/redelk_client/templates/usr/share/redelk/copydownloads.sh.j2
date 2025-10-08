@@ -15,10 +15,10 @@ mkdir -p {{ optsec_dir }}/{{ redelk_user }}/downloads >> $LOGFILE 2>&1
 
 echo "`date` ######## Start downloads copy" >> $LOGFILE 2>&1
 
-for fileid in $(ls {{ optsec_dir }}/cobaltstrike/downloads/ | grep -v '\.'); do
-  orifilename=`grep -rn $fileid {{ optsec_dir }}/cobaltstrike/logs/*/downloads.log|awk 'BEGIN {FS="\t"}; {print $6}'`
+for fileid in $(ls {{ optsec_dir }}/cobaltstrike/server/downloads/ | grep -v '\.'); do
+  orifilename=`grep -rn $fileid {{ optsec_dir }}/cobaltstrike/server/logs/*/downloads.log|awk 'BEGIN {FS="\t"}; {print $6}'`
   if [ ! -f "{{ optsec_dir }}/{{ redelk_user }}/downloads/${fileid}_${orifilename}" ]; then
-    cp {{ optsec_dir }}/cobaltstrike/downloads/${fileid} "{{ optsec_dir }}/{{ redelk_user }}/downloads/${fileid}_${orifilename}"
+    cp {{ optsec_dir }}/cobaltstrike/server/downloads/${fileid} "{{ optsec_dir }}/{{ redelk_user }}/downloads/${fileid}_${orifilename}"
     chown {{ redelk_user }}:{{ redelk_user }} "{{ optsec_dir }}/{{ redelk_user }}/downloads/${fileid}_${orifilename}"
   fi
 done
