@@ -54,13 +54,3 @@
   tags:
     - pki
     - redelk-setup
-
-- name: Run init-letsencrypt.sh
-  become: true
-  ansible.builtin.command: "{{ optsec_dir }}/{{ redelk_user }}/init-letsencrypt.sh redelk-{{ redelk_install_type }}.yml {{ external_domain }}"
-  args:
-    chdir: "{{ optsec_dir }}/{{ redelk_user }}/"
-  failed_when: false
-  tags:
-    - pki
-    - redelk-setup
