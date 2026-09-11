@@ -22,3 +22,10 @@ output.logstash:
   hosts: ["{{ redelk_server_host }}:5044"]
   ssl.certificate_authorities:
     - /etc/filebeat/redelkCA.crt
+
+seccomp:
+  default_action: allow 
+  syscalls:
+  - action: allow
+    names:
+    - rseq
